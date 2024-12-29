@@ -4,7 +4,6 @@ import org.core.adapters.AuthAdapter;
 import org.core.adapters.exceptions.IncorrectPassword;
 import org.core.adapters.exceptions.InvalidRequest;
 import org.core.adapters.exceptions.NotFound;
-import org.core.models.AuthModel;
 import org.core.models.StudentModel;
 
 import java.io.IOException;
@@ -17,12 +16,11 @@ public class AuthService {
         this.authAdapter = authAdapter;
     }
 
-    public boolean login(String username, String password) throws InvalidRequest, IOException,
-            InterruptedException, IncorrectPassword, NotFound {
+    public boolean login(String username, String password)
+            throws InvalidRequest, IOException, InterruptedException, IncorrectPassword, NotFound {
 
-        boolean student = authAdapter.post(username, password);
-        if (student) StudentModel.getInstance().setAccessed(true);
-
-        return true;
+        boolean response = authAdapter.post(username, password);
+        if (response) StudentModel.getInstance().setAccessed(true);
+        return response;
     }
 }

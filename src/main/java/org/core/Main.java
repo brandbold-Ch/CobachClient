@@ -1,27 +1,31 @@
 package org.core;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+import org.core.views.DashboardView;
+import org.core.views.LoginView;
 
 
 public class Main {
 
     public static void main(String[] args) {
-        HttpClient httpClient = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest
-                .newBuilder()
-                .uri(URI.create("http://www.brandbold.site:8000/"))
-                .build();
+        new LoginView();
+        //new DashboardView();
+
+        /*
+        AuthService authService = new AuthService(new AuthAdapter());
+        LoadServices loadServices = new LoadServices(new LoadAdapter());
 
         try {
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println(response.body());
+            authService.login("CXGE070815HCSNMRA5", "22A0710217M0041");
+            loadServices.get("22A0710217M0041", 1);
 
-        } catch (IOException | InterruptedException e) {
+            System.out.println(StudentModel.getInstance().getEnrollment());
+            System.out.println(StudentModel.getInstance().getNames());
+            System.out.println(StudentModel.getInstance().getDetails());
+
+        } catch (InvalidRequest | IOException | InterruptedException | IncorrectPassword | NotFound e) {
             throw new RuntimeException(e);
         }
+
+         */
     }
 }

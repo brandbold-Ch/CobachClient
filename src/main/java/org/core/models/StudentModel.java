@@ -1,12 +1,15 @@
 package org.core.models;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class StudentModel {
+public class StudentModel implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 1L;
     private static StudentModel instance;
     private boolean accessed;
-    private String accessToken;
     private String enrollment;
     private String names;
     private String lastNames;
@@ -80,18 +83,16 @@ public class StudentModel {
         return status;
     }
 
-    public StudentModel setStatus(String status) {
+    public void setStatus(String status) {
         this.status = status;
-        return this;
     }
 
     public ArrayList<LoadsModel> getLoads() {
         return loads;
     }
 
-    public StudentModel setLoads(ArrayList<LoadsModel> loads) {
+    public void setLoads(ArrayList<LoadsModel> loads) {
         this.loads = loads;
-        return this;
     }
 
     public ArrayList<HistoryModel> getHistory() {
@@ -107,31 +108,20 @@ public class StudentModel {
         return details;
     }
 
-    public StudentModel setDetails(DetailsModel details) {
+    public void setDetails(DetailsModel details) {
         this.details = details;
-        return this;
     }
 
     public static void setInstance(StudentModel instance) {
         StudentModel.instance = instance;
     }
 
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public StudentModel setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-        return this;
-    }
-
     public boolean isAccessed() {
         return accessed;
     }
 
-    public StudentModel setAccessed(boolean accessed) {
+    public void setAccessed(boolean accessed) {
         this.accessed = accessed;
-        return this;
     }
 
     public static StudentModel getInstance() {

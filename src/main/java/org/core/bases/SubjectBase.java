@@ -7,8 +7,8 @@ public abstract class SubjectBase {
     protected String partial2;
     protected String partial3;
     protected String average;
-    protected String observation;
-    protected String word;
+    protected Object observation;
+    protected Object word;
 
     public String getEnrollment() {
         return enrollment;
@@ -58,19 +58,19 @@ public abstract class SubjectBase {
         this.average = average;
     }
 
-    public String getObservation() {
+    public Object getObservation() {
         return observation;
     }
 
-    public void setObservation(String observation) {
+    public void setObservation(Object observation) {
         this.observation = observation;
     }
 
-    public String getWord() {
+    public Object getWord() {
         return word;
     }
 
-    public void setWord(String word) {
+    public void setWord(Object word) {
         this.word = word;
     }
 }

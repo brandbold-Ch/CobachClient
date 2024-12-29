@@ -4,7 +4,7 @@ import org.core.adapters.exceptions.IncorrectPassword;
 import org.core.adapters.exceptions.InvalidRequest;
 import org.core.adapters.exceptions.NotFound;
 import org.core.models.AuthModel;
-import org.core.config.Context;
+import org.core.config.Register;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -16,7 +16,7 @@ import org.json.JSONObject;
 
 public class AuthAdapter {
 
-    private final StringBuilder authURl = new StringBuilder(Context.API_URL).append("/auth/login");
+    private final StringBuilder authURl = new StringBuilder(Register.API_URL).append("/auth/login");
     private final HttpClient client = HttpClient.newHttpClient();
 
     public boolean post(String username, String password)
@@ -28,8 +28,8 @@ public class AuthAdapter {
                 .version(HttpClient.Version.HTTP_1_1)
                 .POST(HttpRequest.BodyPublishers.ofString(authModel))
                 .build();
-
         responseHandler(client.send(request, HttpResponse.BodyHandlers.ofString()));
+
         return true;
     }
 
@@ -38,19 +38,19 @@ public class AuthAdapter {
 
         switch (response.statusCode()) {
             case 200 -> transformResponse(response.body());
-            case 401 -> throw new IncorrectPassword("Incorrect password");
-            case 404 -> throw new NotFound("Student Not Found");
-            case 422 -> throw new InvalidRequest("Problem in the request body");
-            default -> throw new IllegalStateException("Unexpected value");
+            case 401 -> throw new IncorrectPassword("Contraseña Incorrecta");
+            case 404 -> throw new NotFound("El estudiante no existe");
+            case 422 -> throw new InvalidRequest("Problema en la solicitud");
+            default -> throw new IllegalStateException("Error en la aplicación");
         }
     }
 
     private void transformResponse(String responseBody) {
         JSONObject responseJSON = new JSONObject(responseBody);
+        Register.ACCESS_TOKEN = "Bearer " + responseJSON.getString("token");
         JSONObject data = responseJSON.getJSONObject("student_data");
 
         StudentModel.getInstance()
-                .setAccessToken("Bearer " + responseJSON.getString("token"))
                 .setEnrollment(data.getString("MATRICULA"))
                 .setNames(data.getString("NOMBRES"))
                 .setLastNames(data.getString("APELLIDOS"))
@@ -60,4 +60,3 @@ public class AuthAdapter {
                 .setStatus(data.getString("STATUSA"));
     }
 }
-
