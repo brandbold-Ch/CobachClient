@@ -39,3 +39,6 @@ build/
 
 #####
 .idea
+
+config.ser
+student.ser

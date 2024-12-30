@@ -1,6 +1,7 @@
 package org.core.views;
 
 import org.core.bases.DefaultComponents;
+import org.core.config.ConfigSecrets;
 import org.core.config.Register;
 import org.core.models.StudentModel;
 
@@ -24,14 +25,16 @@ public class DashboardView extends JFrame implements DefaultComponents {
             public void windowClosing(WindowEvent e) {
                 if (Register.CACHEABLE) {
                     try {
-                        ObjectOutputStream student = new ObjectOutputStream(new FileOutputStream("student.ser"));
-                        ObjectOutputStream register = new ObjectOutputStream(new FileOutputStream("register.ser"));
+                        ObjectOutputStream studentOutputStream = new ObjectOutputStream(
+                                new FileOutputStream("student.ser"));
+                        ObjectOutputStream configOutputStream = new ObjectOutputStream(
+                                new FileOutputStream("config.ser"));
 
-                        student.writeObject(StudentModel.getInstance());
-                        register.writeObject(new Register());
+                        studentOutputStream.writeObject(StudentModel.getInstance());
+                        configOutputStream.writeObject(ConfigSecrets.getInstance());
 
                     } catch (IOException ex) {
-                        System.out.println(ex.getMessage());
+                        ex.printStackTrace();
                     }
                 }
             }

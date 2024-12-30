@@ -1,6 +1,5 @@
 package org.core;
 
-import org.core.views.DashboardView;
 import org.core.views.LoginView;
 
 
@@ -8,7 +7,6 @@ public class Main {
 
     public static void main(String[] args) {
         new LoginView();
-        //new DashboardView();
 
         /*
         AuthService authService = new AuthService(new AuthAdapter());

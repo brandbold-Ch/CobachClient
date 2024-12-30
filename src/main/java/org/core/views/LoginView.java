@@ -5,6 +5,7 @@ import org.core.adapters.exceptions.IncorrectPassword;
 import org.core.adapters.exceptions.InvalidRequest;
 import org.core.adapters.exceptions.NotFound;
 import org.core.bases.DefaultComponents;
+import org.core.config.ConfigSecrets;
 import org.core.config.Register;
 import org.core.models.StudentModel;
 import org.core.services.AuthService;
@@ -32,10 +33,14 @@ public class LoginView extends JFrame implements DefaultComponents {
             @Override
             public void windowOpened(WindowEvent e) {
                 try {
-                    ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("student.ser"));
-                    StudentModel.setInstance((StudentModel) objectInputStream.readObject());
+                    ObjectInputStream studentInputStream = new ObjectInputStream(
+                            new FileInputStream("student.ser"));
+                    ObjectInputStream configInputStream = new ObjectInputStream(
+                            new FileInputStream("config.ser"));
+                    StudentModel.setInstance((StudentModel) studentInputStream.readObject());
+                    ConfigSecrets.setInstance((ConfigSecrets) configInputStream.readObject());
 
-                    if (StudentModel.getInstance().isAccessed()) { wakeUp(); }
+                    if (Register.CACHEABLE) { wakeUp(); }
 
                 } catch (IOException | ClassNotFoundException ex) {
                     ex.getStackTrace();
@@ -84,9 +89,11 @@ public class LoginView extends JFrame implements DefaultComponents {
             boolean response = authService.login(usernameField.getText(), new String(passwordField.getPassword()));
 
             if (response) {
-                if (rememberMe.isSelected()) { Register.CACHEABLE = true; }
+                if (rememberMe.isSelected()) {
+                    Register.CACHEABLE = true;
+                }
+                wakeUp();
             }
-            wakeUp();
 
         } catch (InvalidRequest | IOException | InterruptedException | IncorrectPassword | NotFound ex) {
             showErrorDialog(this, ex);
